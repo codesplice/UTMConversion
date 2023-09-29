@@ -43,7 +43,7 @@ public extension Array<CLLocationCoordinate2D> {
      - Parameter datum: The datum to use, defaults to WGS84 which should be fine for most applications
      
      */
-    func utmCoordinate(datum: UTMDatum = UTMDatum.wgs84) -> [UTMCoordinate] {
+    func utmCoordinates(datum: UTMDatum = UTMDatum.wgs84) -> [UTMCoordinate] {
         guard let first = self.first else { return [] }
         let zone = first.zone
         let hemisphere = first.hemisphere
