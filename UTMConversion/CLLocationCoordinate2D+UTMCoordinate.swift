@@ -31,3 +31,27 @@ public extension CLLocationCoordinate2D {
     }
     
 }
+
+public extension Array<CLLocationCoordinate2D> {
+    
+    /**
+     Converts an array of `CLLocationCoordinate2D`s to an array of UTM Coordinates in the same UTM Zone.
+     
+     - Warning: Some coordinates may fall outside the zone and exhibit greater distortion - only use in instances where
+        the collection of coordinates are known to be in close proximity and the same zone is required for 2D geometry calculations
+     
+     - Parameter datum: The datum to use, defaults to WGS84 which should be fine for most applications
+     
+     */
+    func utmCoordinate(datum: UTMDatum = UTMDatum.wgs84) -> [UTMCoordinate] {
+        guard let first = self.first else { return [] }
+        let zone = first.zone
+        let hemisphere = first.hemisphere
+        return self.map {
+            TMCoordinate(coordinate: $0,
+                         centralMeridian: zone.centralMeridian,
+                         datum: datum)
+            .utmCoordinate(zone: zone, hemisphere: hemisphere)
+        }
+    }
+}
